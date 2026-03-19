@@ -1,26 +1,353 @@
 @import "tailwindcss";
 
+/* =====================================================
+   冷凍試作メニュー管理アプリ - グローバルスタイル
+   ブランドカラー：ピンク / ブルー / イエロー / グリーン
+   使用方針：アクセントのみ、ベースはモノトーン
+   ===================================================== */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* ── ブランドアクセントカラー ──────────────────── */
+  --brand-pink:   #D85A9A;
+  --brand-blue:   #6BAED6;
+  --brand-yellow: #F2C94C;
+  --brand-green:  #7FBF5B;
+
+  /* ── インタラクティブカラー（アクセシビリティ確保のため若干濃く）── */
+  --color-primary:       #3d89b8;   /* brand-blue darkened */
+  --color-primary-hover: #2f72a0;
+  --color-primary-light: #eef6fb;
+  --color-primary-border:#b8daea;
+
+  --color-success:       #5e9e3a;   /* brand-green darkened */
+  --color-success-hover: #4d8830;
+  --color-success-light: #f0f9eb;
+  --color-success-border:#b8dea0;
+
+  --color-warning:       #d4a800;   /* brand-yellow darkened for button bg */
+  --color-warning-light: #fef9e6;
+  --color-warning-border:#f0d880;
+
+  --color-danger:        #b8437a;   /* brand-pink darkened */
+  --color-danger-hover:  #a0356a;
+  --color-danger-light:  #fdf0f8;
+  --color-danger-border: #e8a0cc;
+
+  /* ── ベースカラー（モノトーン） ─────────────────── */
+  --color-bg:            #f9f9f9;
+  --color-surface:       #ffffff;
+  --color-sidebar:       #111827;
+  --color-border:        #e5e7eb;
+  --color-border-strong: #d1d5db;
+
+  /* ── テキスト ───────────────────────────────────── */
+  --color-text-primary:   #111827;
+  --color-text-secondary: #4b5563;
+  --color-text-muted:     #9ca3af;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+* { box-sizing: border-box; }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  font-size: 16px;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN',
+    'Noto Sans JP', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* =====================================================
+   ステータスバッジ
+   グリーン=採用 / ブルー=再試作 / イエロー=条件付き / ピンク=不採用
+   ===================================================== */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 4px;
+  border: 1px solid;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+
+/* 採用 ── グリーン */
+.status-adopted {
+  background-color: #f0f9eb;
+  color: #3d6a20;
+  border-color: #b8dea0;
+}
+
+/* 条件付き採用 ── イエロー */
+.status-conditional {
+  background-color: #fef9e6;
+  color: #7a5000;
+  border-color: #f0d880;
+}
+
+/* 再試作 ── ブルー */
+.status-retrial {
+  background-color: #eef6fb;
+  color: #1d5878;
+  border-color: #9ecce6;
+}
+
+/* 不採用 ── ピンク */
+.status-rejected {
+  background-color: #fdf0f8;
+  color: #8c1a60;
+  border-color: #e8a0cc;
+}
+
+/* 未評価 ── グレー */
+.status-pending {
+  background-color: #f9fafb;
+  color: #6b7280;
+  border-color: #e5e7eb;
+}
+
+/* =====================================================
+   評価数値ドット
+   1=ピンク(最低) → 3=イエロー(中) → 5=グリーン(最高)
+   ===================================================== */
+.rating-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 700;
+}
+/* 問題あり → ピンク */
+.rating-1 { background: #fde8f3; color: #8c1a60; }
+/* やや問題 → 薄ピンク〜アンバー */
+.rating-2 { background: #fef0e0; color: #7a4000; }
+/* 普通 → イエロー */
+.rating-3 { background: #fef6d0; color: #7a5000; }
+/* 良好 → 薄グリーン */
+.rating-4 { background: #eef6e6; color: #3d6a20; }
+/* 優秀 → グリーン */
+.rating-5 { background: #dff0d3; color: #2d5818; }
+
+/* =====================================================
+   テーブル
+   ===================================================== */
+.data-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.data-table th {
+  text-align: left;
+  padding: 10px 14px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--color-border);
+  background: #fafafa;
+  white-space: nowrap;
+}
+.data-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+.data-table tbody tr { transition: background-color 0.1s; }
+.data-table tbody tr:hover { background: #fafafa; }
+.data-table tbody tr:last-child td { border-bottom: none; }
+
+/* =====================================================
+   フォームコントロール
+   ===================================================== */
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: 9px 12px;
+  font-size: 14px;
+  color: var(--color-text-primary);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  -webkit-appearance: none;
+  font-family: inherit;
+}
+/* フォーカス ── ブルーアクセント */
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  border-color: var(--brand-blue);
+  box-shadow: 0 0 0 3px rgba(107, 174, 214, 0.18);
+}
+.form-textarea { resize: vertical; min-height: 80px; }
+.form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin-bottom: 6px;
+}
+.form-hint { font-size: 12px; color: var(--color-text-muted); margin-top: 4px; }
+
+/* =====================================================
+   ボタン
+   ===================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  outline: none;
+  text-decoration: none;
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Primary ── ブルー */
+.btn-primary {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+.btn-primary:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+}
+
+/* Secondary ── グレー */
+.btn-secondary {
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  border-color: var(--color-border-strong);
+}
+.btn-secondary:hover:not(:disabled) { background: #f3f4f6; }
+
+/* Danger ── ピンク */
+.btn-danger {
+  background: var(--color-danger-light);
+  color: var(--color-danger);
+  border-color: var(--color-danger-border);
+}
+.btn-danger:hover:not(:disabled) {
+  background: #f8e0f0;
+  border-color: #d880b8;
+}
+
+/* Ghost */
+.btn-ghost {
+  background: transparent;
+  color: var(--color-text-secondary);
+  border-color: transparent;
+}
+.btn-ghost:hover:not(:disabled) {
+  background: #f3f4f6;
+  color: var(--color-text-primary);
+}
+
+.btn-sm  { padding: 6px 10px; font-size: 13px; }
+.btn-lg  { padding: 12px 24px; font-size: 15px; }
+
+/* =====================================================
+   カード
+   ===================================================== */
+.card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; overflow: hidden; }
+.card-header {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--color-border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.card-title { font-size: 13px; font-weight: 600; color: var(--color-text-primary); letter-spacing: 0.01em; }
+.card-body { padding: 20px; }
+
+/* =====================================================
+   評価グリッド
+   ===================================================== */
+.rating-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 1px;
+  background: var(--color-border);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.rating-cell { background: var(--color-surface); padding: 12px 14px; }
+.rating-cell-label { font-size: 11px; font-weight: 600; color: var(--color-text-muted); letter-spacing: 0.03em; margin-bottom: 6px; }
+.rating-cell-value { font-size: 22px; font-weight: 700; color: var(--color-text-primary); line-height: 1; }
+
+/* =====================================================
+   セクション見出し
+   ===================================================== */
+.section-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: 12px;
+}
+
+/* =====================================================
+   ユーティリティ
+   ===================================================== */
+.text-truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.scrollable-y { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.divider { border: none; border-top: 1px solid var(--color-border); margin: 0; }
+
+.empty-state {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 48px 24px; color: var(--color-text-muted); text-align: center; gap: 8px;
+}
+.empty-state-icon { font-size: 32px; opacity: 0.4; }
+.empty-state-text { font-size: 14px; font-weight: 500; }
+.empty-state-subtext { font-size: 13px; opacity: 0.7; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeIn 0.2s ease-out; }
+
+/* =====================================================
+   ダッシュボード専用ユーティリティ
+   ===================================================== */
+
+/* KPIカード数字：tabular nums */
+.kpi-num {
+  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
+}
+
+/* ダッシュボードテーブル行ホバー */
+.dash-row:hover td {
+  background-color: #fafafa;
+}
+
+/* =====================================================
+   iPad タップ最適化
+   ===================================================== */
+@media (hover: none) and (pointer: coarse) {
+  .btn { min-height: 44px; }
+  .form-input, .form-select, .form-textarea { min-height: 44px; font-size: 16px; }
+  .data-table td { padding: 14px; }
 }
