@@ -28,6 +28,17 @@ const NAV_ITEMS = [
     ),
   },
   {
+    href: '/export/progress',
+    label: '進捗レポート出力',
+    icon: (
+      <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.6" viewBox="0 0 24 24">
+        <polyline points="6 9 6 2 18 2 18 9" />
+        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+        <rect x="6" y="14" width="12" height="8" />
+      </svg>
+    ),
+  },
+  {
     href: '/settings',
     label: '管理設定',
     icon: (
@@ -45,6 +56,7 @@ export default function Sidebar() {
   function isActive(href: string) {
     if (href === '/dashboard') return pathname === '/dashboard'
     if (href === '/menus') return pathname.startsWith('/menus')
+    if (href === '/export/progress') return pathname.startsWith('/export')
     return pathname === href
   }
 

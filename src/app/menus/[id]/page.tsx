@@ -93,6 +93,14 @@ export default async function MenuDetailPage({ params }: PageProps) {
         </div>
       </div>
       <div className="flex gap-2">
+        <Link href={`/export/menu/${id}`} target="_blank" className="btn btn-secondary btn-sm">
+          <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <polyline points="6 9 6 2 18 2 18 9" />
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+            <rect x="6" y="14" width="12" height="8" />
+          </svg>
+          個票出力
+        </Link>
         <Link href={`/menus/${id}/edit`} className="btn btn-secondary btn-sm">編集</Link>
         <Link href={`/menus/${id}/trials/new`} className="btn btn-primary btn-sm">
           <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">

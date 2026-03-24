@@ -61,12 +61,22 @@ export default async function MenusPage({ searchParams }: PageProps) {
         <h1 className="text-base font-semibold" style={{ color: '#111827' }}>メニュー一覧</h1>
         <p className="text-xs mt-0.5" style={{ color: '#9ca3af' }}>{filteredMenus.length}件</p>
       </div>
-      <Link href="/menus/new" className="btn btn-primary btn-sm">
-        <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-          <path d="M12 5v14M5 12h14" />
-        </svg>
-        新規登録
-      </Link>
+      <div className="flex gap-2">
+        <Link href="/export/progress" target="_blank" className="btn btn-secondary btn-sm">
+          <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <polyline points="6 9 6 2 18 2 18 9" />
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+            <rect x="6" y="14" width="12" height="8" />
+          </svg>
+          進捗レポート出力
+        </Link>
+        <Link href="/menus/new" className="btn btn-primary btn-sm">
+          <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <path d="M12 5v14M5 12h14" />
+          </svg>
+          新規登録
+        </Link>
+      </div>
     </div>
   )
 
